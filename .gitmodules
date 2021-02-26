@@ -1,0 +1,4 @@
+[submodule "server_project"]
+	path = server_project
+	url = git@github.com:kenkit/server_project.git
+	shallow = true
