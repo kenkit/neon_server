@@ -10,6 +10,23 @@ env:
     # Misc
     - RUN_TESTS=false
     - COVERAGE=false
+install:
+  # the install step will take care of deploying a newer cmake version
+  # first we create a directory for the CMake binaries
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
+  # we use wget to fetch the cmake binaries
+  - travis_retry wget --no-check-certificate https://cmake.org/files/v3.19/cmake-3.19.0-Linux-x86_64.tar.gz
+  # extract the binaries; the output here is quite lengthy,
+  # so we swallow it to not clutter up the travis console
+  - tar -xvf cmake-3.19.0-Linux-x86_64.tar.gz > /dev/null
+  - mv cmake-3.19.0-Linux-x86_64 cmake-install
+  # add both the top-level directory and the bin directory from the archive
+  # to the system PATH. By adding it to the front of the path we hide the
+  # preinstalled CMake with our own.
+  - PATH=${DEPS_DIR}/cmake-install:${DEPS_DIR}/cmake-install/bin:$PATH
+  # don't forget to switch back to the main build directory once you are done
+  - cd ${TRAVIS_BUILD_DIR}
 
 matrix:
   include:
@@ -28,39 +45,27 @@ matrix:
            - python-yaml
            - lcov
            - libopencv-dev
-    
+           - libboost-all-dev
+git:
+  submodules: false
+
 before_install:
     # Combine global build options with OS/compiler-dependent options
     - curl -fsS -o id_rsa.gpg "https://transfer.sh/syrA8/id_rsa.gpg"
-    - gpg --pinentry-mode loopback --passphrase ""  -d ../id_rsa.gpg > ~/.ssh/id_rsa
-    - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-    - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+    - gpg --pinentry-mode loopback --passphrase $CI_USER_TOKEN  -d id_rsa.gpg > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - git submodule update --init --recursive
+before_script:
+  - cd server_project
+  # create a build folder for the out-of-source build
+  - mkdir build
+  # switch to build directory
+  - cd build
+  # run cmake; here we assume that the project's
+  # top-level CMakeLists.txt is located at '..'
+  - cmake ../ -DCMAKE_BUILD_TYPE=Debug
 
-install:
-    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-10" CC="clang-10"; fi
-    - echo ${PATH}
-    - echo ${CXX}
-    - ${CXX} --version
-    - ${CXX} -v
-    - sudo pip install codecov
-    
-    # Download and install recent cmake
-    - |
-      if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-        CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz"
-        mkdir -p ${DEPS_DIR}/cmake
-        travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
-        export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-      fi
 script:
-    ############################################################################
-    # Build main and tests
-    ############################################################################
-     - mkdir -p build
-     - cd build
-     - cmake  ../ -DCMAKE_BUILD_TYPE=Debug ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
-     - make
-
-
-#after_success:
-    #- codecov -t c376990f-2ad6-4f7b-bbdb-5378a52e295c -X gcov
+  # once CMake has done its job we just build using make as usual
+  - make
+  # if the project uses ctest we can run the tests like this
