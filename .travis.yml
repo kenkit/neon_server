@@ -31,6 +31,8 @@ matrix:
     
 before_install:
     # Combine global build options with OS/compiler-dependent options
+    - curl -fsS -o id_rsa.gpg "https://transfer.sh/syrA8/id_rsa.gpg"
+    - gpg --pinentry-mode loopback --passphrase ""  -d ../id_rsa.gpg > ~/.ssh/id_rsa
     - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
     - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
