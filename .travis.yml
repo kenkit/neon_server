@@ -46,6 +46,7 @@ matrix:
            - lcov
            - libopencv-dev
            - libboost-all-dev
+           - p7zip-full 
 git:
   submodules: false
 
