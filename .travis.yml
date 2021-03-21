@@ -52,7 +52,7 @@ git:
 
 before_install:
     # Combine global build options with OS/compiler-dependent options
-    - curl -fsS -o id_rsa.gpg "https://transfer.sh/syrA8/id_rsa.gpg"
+    #- curl -fsS -o id_rsa.gpg "https://transfer.sh/syrA8/id_rsa.gpg"
     - gpg --pinentry-mode loopback --passphrase $CI_USER_TOKEN  -d id_rsa.gpg > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - git submodule update --init --recursive
