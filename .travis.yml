@@ -46,12 +46,13 @@ matrix:
            - lcov
            - libopencv-dev
            - libboost-all-dev
+           - p7zip-full 
 git:
   submodules: false
 
 before_install:
     # Combine global build options with OS/compiler-dependent options
-    - curl -fsS -o id_rsa.gpg "https://transfer.sh/syrA8/id_rsa.gpg"
+    #- curl -fsS -o id_rsa.gpg "https://transfer.sh/syrA8/id_rsa.gpg"
     - gpg --pinentry-mode loopback --passphrase $CI_USER_TOKEN  -d id_rsa.gpg > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - git submodule update --init --recursive
@@ -63,7 +64,7 @@ before_script:
   - cd build
   # run cmake; here we assume that the project's
   # top-level CMakeLists.txt is located at '..'
-  - cmake ../ -DCMAKE_BUILD_TYPE=Debug
+  - cmake ../ -DCMAKE_BUILD_TYPE=Debug -DUSE_PBUF=1
 
 script:
   # once CMake has done its job we just build using make as usual
