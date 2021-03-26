@@ -112,7 +112,7 @@ jobs:
       run: echo %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi
       shell: cmd
     - name: xtract openssl
-    - uses: edgarrc/action-7z@v1.0.4
+      uses: edgarrc/action-7z@v1.0.4
       with:
         args: 7z a -t7z -mx=9  ${{github.workspace}}/openssl.zip
     - name: Install mysql
