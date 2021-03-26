@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install keys
-      run: gpg --pinentry-mode loopback --passphrase $CI_USER_TOKEN  -d id_rsa.gpg > ~/.ssh/id_rsa
+      run: gpg --pinentry-mode loopback --passphrase $CI_USER_TOKEN  -d  $GITHUB_WORKSPACE/id_rsa.gpg > ~/.ssh/id_rsa
     - name: Change mods
       run: chmod 600 ~/.ssh/id_rsa
     - name: Checkout submodules
