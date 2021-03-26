@@ -1,4 +1,6 @@
 name: 'Build CMake'
+uses: ashutoshvarma/action-cmake-build@v1
+
 description: 'Configure, Build and Test a CMake project'
 author: 'Ashutosh Varma'
 inputs:
@@ -50,10 +52,6 @@ inputs:
   ctest-options:
     description: Misc Options to pass to CTest
     required: false
-  
-runs:
-  using: 'node12'
-  main: 'dist/index.js'
 
 branding:
   icon: 'feather'  
