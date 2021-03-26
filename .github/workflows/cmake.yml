@@ -85,13 +85,33 @@ jobs:
       run: |          
           mkdir ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-    - name: Checkout submodule
-      run: git submodule update --init --recursive
-
+          
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{github.workspace}}/build
+      
+    - uses: suisei-cn/actions-download-file@v1
+      id: downloadfile  # Remember to give an ID if you need the output filename
+      name: Download libmysql
+      with:
+        url: "https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-win32.msi"
+        target: ${{github.workspace}}/
+        
+    - name: echo mysql path
+      run: echo %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi
+      shell: cmd
+      
+    - name: xtract openssl
+      run: \"/c/Program Files/7-Zip/7z.exe\"  x %GITHUB_WORKSPACE%\openssl.zip
+      shell: cmd
+        
+    - name: Install mysql
+      run:  start /wait msiexec.exe /i %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi   /quiet /l*v install.log 
+      shell: cmd
+    - name: Checkout submodule
+      run: git submodule update --init --recursive
+      
     - name: Install boost
       uses: MarkusJx/install-boost@v1.0.1
       id: install-boost
@@ -102,22 +122,7 @@ jobs:
         boost_version: 1.73.0
         # OPTIONAL: Specify a toolset on windows
         toolset: msvc14.2
-    - uses: suisei-cn/actions-download-file@v1
-      id: downloadfile  # Remember to give an ID if you need the output filename
-      name: Download libmysql
-      with:
-        url: "https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-win32.msi"
-        target: ${{github.workspace}}/
-    - name: echo mysql path
-      run: echo %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi
-      shell: cmd
-    - name: xtract openssl
-      uses: edgarrc/action-7z@v1.0.4
-      with:
-        args: 7z a -t7z -mx=9  ${{github.workspace}}/openssl.zip
-    - name: Install mysql
-      run:  start /wait msiexec.exe /i %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi   /quiet /l*v install.log 
-      shell: cmd
+        
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
@@ -126,7 +131,7 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake $GITHUB_WORKSPACE/server_project/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_LOCAL_TESTING=1
+      run: cmake $GITHUB_WORKSPACE/server_project/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_LOCAL_TESTING=1 -DOPENSSL_ROOT_DIR=$GITHUB_WORKSPACE/openssl -DOPENSSL_INCLUDE_DIR=$GITHUB_WORKSPACE/openssl/include
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
     - name: Build
