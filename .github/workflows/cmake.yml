@@ -103,7 +103,7 @@ jobs:
       shell: cmd
       
     - name: xtract openssl
-      run: \"/c/Program Files/7-Zip/7z.exe\"  x %GITHUB_WORKSPACE%\openssl.zip
+      run: \"C:/Program Files/7-Zip/7z.exe\"  x %GITHUB_WORKSPACE%\openssl.zip
       shell: cmd
         
     - name: Install mysql
