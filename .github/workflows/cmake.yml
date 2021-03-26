@@ -26,7 +26,7 @@ jobs:
         name: id_rsa # optional
         if_key_exists: ignore # replace / ignore / fail; optional (defaults to fail)
         known_hosts: unnecessary
-    - name: Checkout submodules
+    - name: checkout submodule
       run: git submodule update --init --recursive
 
     - name: Create Build Environment
