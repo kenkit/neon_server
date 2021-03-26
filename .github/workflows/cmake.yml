@@ -19,11 +19,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
       with:
-        repository: <org name>/<repo name>
-        path: path
-        ssh-key: ${{ secrets.SSH_KEY }}
-        persist-credentials: true
+        key: ${{ secrets.SSH_KEY }}
+        name: id_rsa # optional
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        config: ${{ secrets.CONFIG }} # ssh_config; optional
+        if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
     - name: Checkout submodules
       run: git submodule update --init --recursive
 
