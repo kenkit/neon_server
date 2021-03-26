@@ -101,10 +101,10 @@ jobs:
         url: "https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-win32.msi"
         target: ${{github.workspace}}/
     - name: echo mysql path
-      run: echo %GITHUB_WORKSPACE%\\mysql-connector-c-6.1.11-win32.msi
+      run: echo %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi
       shell: cmd
     - name: Install mysql
-      run:  start /wait msiexec.exe /i %GITHUB_WORKSPACE%mysql-connector-c-6.1.11-win32.msi   /quiet /l*v install.log 
+      run:  start /wait msiexec.exe /i %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi   /quiet /l*v install.log 
       shell: cmd
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
