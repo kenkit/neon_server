@@ -26,6 +26,8 @@ jobs:
         name: id_rsa # optional
         if_key_exists: replace # replace / ignore / fail; optional (defaults to fail)
         known_hosts: unnecessary
+    - name: Start Agent
+      run: eval `ssh-agent -s`
     - name: Load keys
       run: ssh-add -K ~/.ssh/id_rsa
     - name: checkout submodule
