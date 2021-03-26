@@ -56,13 +56,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2      
-    - name: Install SSH key
-      uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.SSH_KEY }}
-        name: id_rsa # optional
-        if_key_exists: replace # replace / ignore / fail; optional (defaults to fail)
-        known_hosts: unnecessary
+    - name: Configure SSH
+      run: |
+          Set-Service ssh-agent -StartupType Manual
+          Start-Service ssh-agent
+          git config --global core.sshCommand "'C:\Windows\System32\OpenSSH\ssh.exe'"
+    - name: Add SSH key
+      run: |
+          echo $env:SSH_PRIVATE_KEY | ssh-add -
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Add github.com to known_hosts
+      run: |          
+          mkdir ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
     - name: checkout submodule
       run: git submodule update --init --recursive
 
