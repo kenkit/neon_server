@@ -85,7 +85,7 @@ jobs:
       run: |          
           mkdir ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-    - name: checkout submodule
+    - name: Checkout submodule
       run: git submodule update --init --recursive
 
     - name: Create Build Environment
@@ -93,7 +93,8 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{github.workspace}}/build
     - name: Create Build Environment-Boost
-      run: $env:BOOST_ROOT=$env:BOOST_ROOT_1_72_0
+      run: set BOOST_ROOT=%BOOST_ROOT_1_72_0% && set BOOST_DIR=%BOOST_ROOT_1_72_0% 
+      shell: cmd
     - uses: suisei-cn/actions-download-file@v1
       id: downloadfile  # Remember to give an ID if you need the output filename
       name: Download libmysql
