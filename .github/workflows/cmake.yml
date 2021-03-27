@@ -103,7 +103,7 @@ jobs:
       shell: cmd
       
     - name: xtract openssl
-      run: 7z x ${{github.workspace}}/openssl.zip  -o${{github.workspace}}/
+      run: 7z x ${{github.workspace}}/openssl.zip  -o${{github.workspace}}
         
     - name: Install mysql
       run:  start /wait msiexec.exe /i %GITHUB_WORKSPACE%\mysql-connector-c-6.1.11-win32.msi   /quiet /l*v install.log 
