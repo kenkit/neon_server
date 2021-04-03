@@ -134,6 +134,7 @@ jobs:
       env:
         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
         OPENSSL_ROOT_DIR: ${{github.workspace}}/openssl
+        MYSQL_DIR: C:\Program Files (x86)\MySQL\MySQL Connector C 6.1
     - name: Build
       working-directory: ${{github.workspace}}/build
       shell: bash
