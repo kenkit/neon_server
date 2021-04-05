@@ -99,12 +99,12 @@ jobs:
        url: "https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32.zip"
        target: ${{github.workspace}}/
 
-   - name: echo mysql path
-     run:  dir %GITHUB_WORKSPACE%\mysql-connector-c++-8.0.23-win32.zip
-     shell: cmd
-
    - name: xtract mysql
      run: 7z x ${{github.workspace}}/mysql-connector-c++-8.0.23-win32.zip  -o${{github.workspace}}
+
+   - name: echo mysql path
+     run:  dir %GITHUB_WORKSPACE%
+     shell: cmd
 
    - name: xtract openssl
      run: 7z x ${{github.workspace}}/openssl.zip  -o${{github.workspace}}
