@@ -97,7 +97,7 @@ jobs:
      name: Download mysql-connector-c++-8.0.23-win32.zip
      with:
        url: "https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32.zip"
-       target: ${{github.workspace}}/
+       target: ${{github.workspace}}\
 
    - name: xtract mysql
      run: 7z x ${{github.workspace}}/mysql-connector-c++-8.0.23-win32.zip  -o${{github.workspace}}
@@ -134,10 +134,10 @@ jobs:
      # Note the current convention is to use the -S and -B options here to specify source
      # and build directories, but this is only available with CMake 3.13 and higher.
      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-     run: cmake $GITHUB_WORKSPACE/server_project/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_LOCAL_TESTING=1 -DOPENSSL_ROOT_DIR=%GITHUB_WORKSPACE%\openssl -DOPENSSL_INCLUDE_DIR=%GITHUB_WORKSPACE%\openssl\include -DENABLE_JDBC_XDEV=1  -DMYSQL_CPP_DIR=${{github.workspace}}/mysql-connector-c++-8.0.23-win32/
+     run: cmake $GITHUB_WORKSPACE/server_project/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENABLE_LOCAL_TESTING=1 -DOPENSSL_ROOT_DIR=${{github.workspace}}\openssl -DOPENSSL_INCLUDE_DIR=${{github.workspace}}\openssl\include -DENABLE_JDBC_XDEV=1  -DMYSQL_CPP_DIR=${{github.workspace}}\mysql-connector-c++-8.0.23-win32\
      env:
        BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-       OPENSSL_ROOT_DIR: ${{github.workspace}}/openssl
+       OPENSSL_ROOT_DIR: ${{github.workspace}}\openssl
    - name: Build
      working-directory: ${{github.workspace}}/build
      shell: bash
