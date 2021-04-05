@@ -1,1 +1,1 @@
-cmake ../server_project -DCMAKE_BUILD_TYPE=Debug -DENABLE_LOCAL_TESTING=1 -DOPENSSL_ROOT_DIR=D:\programming\openssl -DOPENSSL_INCLUDE_DIR=D:\programming\openssl\include -DBOOST_ROOT=D:\programming\boost_1_75_0\ 
+cmake ../server_project -DCMAKE_BUILD_TYPE=Debug -DENABLE_LOCAL_TESTING=1 -DOPENSSL_ROOT_DIR=D:\programming\openssl -DOPENSSL_INCLUDE_DIR=D:\programming\openssl\include -DBOOST_ROOT=D:\programming\boost_1_75_0\  -DMYSQL_CPP_DIR=C:\Users\Aiden\Desktop\mysql-connector-c++-8.0.23-win32\ -DENABLE_JDBC_XDEV=1
