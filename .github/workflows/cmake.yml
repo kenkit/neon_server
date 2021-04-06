@@ -94,13 +94,13 @@ jobs:
 
    - uses: suisei-cn/actions-download-file@v1
      id: downloadfile  # Remember to give an ID if you need the output filename
-     name: Download mysql-connector-c++-8.0.23-win32.zip
+     name: Download mysql-connector-c++-8.0.23-win32-debug.zip
      with:
-       url: "https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32.zip"
+       url: "https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32-debug.zip" #"https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32.zip"
        target: ${{github.workspace}}\
 
    - name: xtract mysql
-     run: 7z x ${{github.workspace}}/mysql-connector-c++-8.0.23-win32.zip  -o${{github.workspace}}
+     run: 7z x ${{github.workspace}}/mysql-connector-c++-8.0.23-win32-debug.zip  -o${{github.workspace}}
 
    - name: echo mysql path
      run:  dir %GITHUB_WORKSPACE%\mysql-connector-c++-8.0.23-win32
