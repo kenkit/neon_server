@@ -96,7 +96,7 @@ jobs:
      id: downloadfile  # Remember to give an ID if you need the output filename
      name: Download mysql-connector-c++-8.0.23-win32-debug.zip
      with:
-       url: "https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32-debug.zip" #"https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32.zip"
+       url: "https://cdn.mysql.com/archives/mysql-connector-c++/mysql-connector-c++-8.0.23-win32-debug.zip" #"https://cdn.mysql.com//Downloads/Connector-C++/mysql-connector-c++-8.0.23-win32.zip"
        target: ${{github.workspace}}\
 
    - name: xtract mysql
@@ -122,7 +122,7 @@ jobs:
        # REQUIRED: Specify the required boost version
        # A list of supported versions can be found here:
        # https://github.com/actions/boost-versions/blob/main/versions-manifest.json
-       boost_version: 1.72.0
+       boost_version: 1.73.0
        # OPTIONAL: Specify a toolset on windows
        toolset: msvc14.2
 
