@@ -35,7 +35,7 @@ jobs:
       run: cmake -E make_directory ${{github.workspace}}/build
 
     - name: boost
-      run: sudo apt-get update && sudo apt-get install -yq build-essential  clang-10 valgrind libboost-all-dev p7zip-full libcurl4-gnutls-dev default-libmysqlclient-dev
+      run: sudo apt-get update && sudo apt-get install -yq build-essential  valgrind libboost-all-dev p7zip-full libcurl4-gnutls-dev default-libmysqlclient-dev
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
